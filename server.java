@@ -1,5 +1,3 @@
-// Server program to handle multiple
-// Clients with socket connections
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -18,7 +16,7 @@ public class server {
                 Socket clientSocket = serverSocket.accept(); 
                 System.out.println("New client connected: " + clientSocket); 
 
-                // Create a new client handler for the connected client 
+                // client handler for the connected client 
                 ClientHandler clientHandler = new ClientHandler(clientSocket); 
                 clients.add(clientHandler); 
                 new Thread(clientHandler).start(); 
@@ -42,14 +40,14 @@ public class server {
         private Socket clientSocket; 
         private PrintWriter out; 
         private BufferedReader in; 
-        private String Username; // Use Username consistently
+        private String Username;
 
         // Constructor 
         public ClientHandler(Socket socket) { 
             this.clientSocket = socket; 
 
             try { 
-                // Create input and output streams for communication 
+                // Create input and output stream
                 out = new PrintWriter(clientSocket.getOutputStream(), true); 
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); 
             } catch (IOException e) { 
@@ -62,19 +60,19 @@ public class server {
         public void run() { 
             try { 
                 // Get the username from the client 
-                Username = getUsername(); // Use Username consistently
-                System.out.println("User " + Username + " connected."); // Use Username consistently
+                Username = getUsername(); 
+                System.out.println("User " + Username + " connected.");
 
-                out.println("Welcome to the chat, " + Username + "!"); // Use Username consistently
+                out.println("Welcome to the chat, " + Username + "!");
                 out.println("Type Your Message"); 
                 String inputLine; 
 
-                // Continue receiving messages from the client 
+                 
                 while ((inputLine = in.readLine()) != null) { 
-                    System.out.println("[" + Username + "]: " + inputLine); // Use Username consistently
+                    System.out.println("[" + Username + "]: " + inputLine);
 
                     // Broadcast the message to all clients 
-                    broadcast("[" + Username + "]: " + inputLine, this); // Use Username consistently
+                    broadcast("[" + Username + "]: " + inputLine, this);
                 } 
 
                 // Remove the client handler from the list 
